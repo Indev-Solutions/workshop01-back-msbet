@@ -12,8 +12,8 @@ class BetApplicationTests {
 
 	@Test
 	void contextLoads() {
-		var result = "dummy";
-		assertEquals("dummy", result);
+		var result= "test";
+		assertEquals("test", result);
 	}
 
 }
