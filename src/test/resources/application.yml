@@ -1,6 +1,8 @@
 server:
    servlet:
       context-path: /workshop
+   error:
+      include-message: always
 spring:
    flyway:
       locations: classpath:db/migrations
