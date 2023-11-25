@@ -18,6 +18,14 @@
 	<properties>
 		<java.version>17</java.version>
 		<modelmapper.version>3.1.1</modelmapper.version>
+		<jacoco.version>0.8.10</jacoco.version>
+		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+		<sonar.language>java</sonar.language>
+		<sonar.exclusions>com/indevsolutions/workshop/bet/domain/**/*, com/indevsolutions/workshop/bet/dto/**/*</sonar.exclusions>
+		<sonar.projectKey>workshop-bet</sonar.projectKey>
+		<sonar.projectName>workshop bet</sonar.projectName> 
+		<sonar.host.url>http://localhost:9000</sonar.host.url>		 
+  		<sonar.java.binaries>target</sonar.java.binaries>
 	</properties>
 	
 	<dependencies>

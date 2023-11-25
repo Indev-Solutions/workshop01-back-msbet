@@ -10,8 +10,8 @@ spring:
       defaultSchema: bet_schema
    datasource:
       url: jdbc:postgresql://localhost:5432/workshop
-      username: postgres
-      password: postgres
+      username: ${DATABASE_USER:postgres}
+      password: ${DATABASE_PASSWORD:postgres}
       driver-class-name: org.postgresql.Driver
    jpa:
       hibernate:
