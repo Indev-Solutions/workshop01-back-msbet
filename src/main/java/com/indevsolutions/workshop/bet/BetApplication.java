@@ -12,8 +12,9 @@ public class BetApplication {
 		SpringApplication.run(BetApplication.class, args);
 	}
 
-    @Bean
-    ModelMapper modelMapper() {
+	@Bean
+	ModelMapper modelMapper() {
 		return new ModelMapper();
 	}
+
 }

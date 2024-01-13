@@ -5,8 +5,6 @@ import java.util.Set;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,25 +18,27 @@ import com.indevsolutions.workshop.bet.service.BetService;
 @RequestMapping("/bets")
 public class BetController {
 
-	@Autowired
-	private BetService betService;
+	private final BetService betService;
+	private final ModelMapper modelMapper;
 
-	@Autowired
-	private ModelMapper modelMapper;
+	public BetController(BetService betService, ModelMapper modelMapper) {
+		super();
+		this.betService = betService;
+		this.modelMapper = modelMapper;
+	}
 
 	@GetMapping
 	public List<BetDTO> findBets(@RequestParam(required = false) Set<Long> id,
 			@RequestParam(required = false) Long leagueId, @RequestParam(required = false) Integer status) {
-	
-		if(CollectionUtils.isNotEmpty(id)) {
+
+		if (CollectionUtils.isNotEmpty(id)) {
 			return betService.findBetsByIds(id);
 		}
-		
 
 		if (leagueId != null) {
 			return betService.findBetsByLeagueIdAndStatus(leagueId, status);
 		}
-		
+
 		return betService.findBetsByStatus(status);
 	}
 

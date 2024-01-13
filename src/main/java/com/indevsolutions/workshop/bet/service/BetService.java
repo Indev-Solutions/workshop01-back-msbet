@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.indevsolutions.workshop.bet.domain.Bet;
@@ -18,11 +17,14 @@ import com.indevsolutions.workshop.bet.repository.BetRepository;
 @Service
 public class BetService {
 
-	@Autowired
-	private BetRepository betRepository;
+	private final BetRepository betRepository;
+	private final ModelMapper modelMapper;
 
-	@Autowired
-	private ModelMapper modelMapper;
+	public BetService(BetRepository betRepository, ModelMapper modelMapper) {
+		super();
+		this.betRepository = betRepository;
+		this.modelMapper = modelMapper;
+	}
 
 	/**
 	 * Find bets by ids
