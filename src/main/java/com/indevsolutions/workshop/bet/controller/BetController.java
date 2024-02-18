@@ -38,7 +38,6 @@ public class BetController {
 		if (leagueId != null) {
 			return betService.findBetsByLeagueIdAndStatus(leagueId, status);
 		}
-
 		return betService.findBetsByStatus(status);
 	}
 
