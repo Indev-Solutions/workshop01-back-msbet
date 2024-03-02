@@ -1,0 +1,26 @@
+server:
+   servlet:
+      context-path: /workshop
+   port: 8080 
+   error:
+      include-message: always
+spring:
+   flyway:
+      locations: classpath:db/migrations
+      defaultSchema: bet_schema
+   datasource:
+      url: jdbc:postgresql://localhost:5432/workshop
+      username: ${DATABASE_USER:postgres}
+      password: ${DATABASE_PASSWORD:postgres}
+      driver-class-name: org.postgresql.Driver
+   jpa:
+      hibernate:
+         ddl-auto: none
+      show-sql: true
+      properties:
+         hibernate:
+            dialect: org.hibernate.dialect.PostgreSQLDialect
+            '[format_sql]': true
+            '[default_schema]': bet_schema
+            
+ 
