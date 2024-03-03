@@ -3,6 +3,7 @@ run-name: ${{ github.actor }} is starting the execution of backend pipeline with
 on: workflow_dispatch
 env:
   AWS_REGION: us-east-1 # set this to your preferred AWS region, e.g. us-west-1
+  SONAR_PROJECT_KEY: ${{ env.SONAR_PROJECT_KEY }}
 jobs:
   build:
     name: 'Backend CI'
