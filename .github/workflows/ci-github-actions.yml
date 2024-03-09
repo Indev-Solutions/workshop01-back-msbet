@@ -1,6 +1,9 @@
 name: Java CI
-run-name: ${{ github.actor }} is starting the execution of backend pipeline with GitHub Actions
-on: workflow_dispatch
+run-name: ${{ github.actor }} is starting the execution of backend pipeline "Java CI" with GitHub Actions
+on:
+  push:
+    branches: [ "develop" ]
+  workflow_dispatch:
 env:
   AWS_REGION: us-east-1
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
@@ -25,6 +28,12 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
+      - name: Get AWS Secrets by Name
+        uses: aws-actions/aws-secretsmanager-get-secrets@v1
+        with:
+          secret-ids: |
+            pro/workshop1/secrets
+          parse-json-secrets: true
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       - name: Login to Docker Hub
@@ -32,3 +41,14 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push to Docker Hub
+        uses: docker/build-push-action@v5
+        with:
+          target: production
+          build-args: |
+            "env_database_url=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_HOSTNAME }}"
+            "env_database_user=dbadmin"
+            "env_database_password=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_PASSWORD }}"
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/workshop1:ms-bet_v1
