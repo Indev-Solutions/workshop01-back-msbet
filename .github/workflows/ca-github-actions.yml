@@ -2,10 +2,8 @@ name: Java Code Analysis
 run-name: ${{ github.actor }} is starting the execution of backend pipeline with GitHub Actions
 on:
   pull_request:
-    branches: [ "develop" ]
+    branches: [ "develop", "master" ]
   workflow_dispatch:
-env:
-  AWS_REGION: us-east-1
 permissions:
   pull-requests: read
 jobs:
