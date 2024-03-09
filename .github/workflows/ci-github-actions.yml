@@ -2,7 +2,8 @@ name: Java CI
 run-name: ${{ github.actor }} is starting the execution of backend pipeline with GitHub Actions
 on: workflow_dispatch
 env:
-  AWS_REGION: us-east-1 # set this to your preferred AWS region, e.g. us-west-1
+  AWS_REGION: us-east-1
+  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 jobs:
   build:
     name: 'Backend CI'
@@ -17,7 +18,7 @@ jobs:
           architecture: x64
           cache: maven
       - name: Build and Test with Maven
-        run: mvn --batch-mode --update-snapshots verify sonar:sonar -Dsonar.projectKey=$SONAR_PROJECT_KEY
+        run: mvn --batch-mode --update-snapshots verify sonar:sonar -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
