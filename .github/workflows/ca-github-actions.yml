@@ -1,0 +1,22 @@
+name: Java Code Analysis
+run-name: ${{ github.actor }} is starting the execution of backend pipeline "Java Code Analysis" with GitHub Actions
+on:
+  pull_request:
+    branches: [ "develop", "master" ]
+  workflow_dispatch:
+permissions:
+  pull-requests: read
+jobs:
+  Analysis:
+    name: 'Backend Code Analysis'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Analyze with SonarCloud
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args:
+            -Dsonar.projectKey=${{ vars.SONAR_PROJECT_KEY }}
+            -Dsonar.organization=${{ vars.SONAR_ORGANIZATION }}

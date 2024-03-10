@@ -20,6 +20,8 @@
 		<modelmapper.version>3.1.1</modelmapper.version>
 		<jacoco.version>0.8.10</jacoco.version>
 		<spring-doc.version>2.3.0</spring-doc.version>
+		<sonar.organization>indev-solutions</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 		<sonar.language>java</sonar.language>
@@ -28,7 +30,7 @@
 		<sonar.exclusions>src/**/domain/**/*, src/**/dto/**/*</sonar.exclusions>
 		<sonar.projectKey>Indev-Solutions_workshop01-back-msbet</sonar.projectKey>
 		<sonar.organization>indev-solutions</sonar.organization> 
-		<sonar.host.url>https://sonarcloud.io</sonar.host.url>		 
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
   		<sonar.java.binaries>target</sonar.java.binaries>
 	</properties>
 	
@@ -141,5 +143,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
 </project>
