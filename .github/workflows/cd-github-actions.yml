@@ -17,3 +17,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
       - name: Update Kubernetes Configuration
         run: aws eks update-kubeconfig --region us-east-1 --name my_eks
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+      - name: Execute Terraform Init
+        run: terraform init
