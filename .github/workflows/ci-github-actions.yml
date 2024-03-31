@@ -41,8 +41,6 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Debug
-        run: echo $PRO_WORKSHOP1_SECRETS_DATABASE_HOSTNAME
       - name: Build and push to Docker Hub
         uses: docker/build-push-action@v5
         with:
@@ -53,4 +51,4 @@ jobs:
             "env_database_password=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_PASSWORD }}"
           context: .
           push: true
-          tags: ${{ vars.DOCKERHUB_REPOSITORY }}/workshop1:ms-bet_v2
+          tags: ${{ vars.DOCKERHUB_REPOSITORY }}/workshop1:ms-bet_v4

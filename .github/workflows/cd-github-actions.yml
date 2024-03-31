@@ -14,3 +14,5 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Update Kubernetes Configuration
+        run: aws eks update-kubeconfig --region us-east-1 --name my_eks

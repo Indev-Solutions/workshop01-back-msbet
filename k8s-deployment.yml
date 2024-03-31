@@ -14,9 +14,10 @@ spec:
     spec:
       containers:
         - name: customservicebet
-          image: indevsolutions/workshop1:ms-bet_v1
+          image: indevsolutions/workshop1:ms-bet_v4
           ports:
             - name: tcp
               containerPort: 8080
-#      imagePullSecrets:
-#        - name: my-registry-secret
+          env:
+          - name: DATABASE_USER
+            value: "dbadmin"
