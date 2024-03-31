@@ -19,6 +19,6 @@ jobs:
         run: aws eks update-kubeconfig --region us-east-1 --name my_eks
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
-      - name: Debug
+      - name: Execute Terraform Init
         working-directory: ./deploy
-        run: pwd
+        run: terraform init
