@@ -1,6 +1,8 @@
 name: Java CI+CD
 run-name: ${{ github.actor }} is starting the execution of backend pipeline "Java CI+CD" with GitHub Actions
 on: workflow_dispatch
+env:
+  AWS_REGION: us-east-1
 jobs:
   deploy:
     name: 'Backend CD'
