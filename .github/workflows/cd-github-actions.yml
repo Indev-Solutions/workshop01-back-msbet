@@ -5,7 +5,7 @@ jobs:
   deploy:
     name: 'Backend CD'
     runs-on: self-hosted
-    needs: build
+#    needs: build
     steps:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
