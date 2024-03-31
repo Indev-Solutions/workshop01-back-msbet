@@ -16,9 +16,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
       - name: Update Kubernetes Configuration
-        run: aws eks update-kubeconfig --region us-east-1 --name my_eks
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
+        run: aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name my_eks
       - name: Debug
 #        working-directory: ./deploy
         run: terraform version
