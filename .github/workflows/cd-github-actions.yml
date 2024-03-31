@@ -20,6 +20,9 @@ jobs:
       - name: Execute Terraform Init
         working-directory: ./deploy
         run: terraform init
+      - name: Execute Terraform Plan
+        working-directory: ./deploy
+        run: terraform plan
       - name: Execute Terraform Apply
         working-directory: ./deploy
         run: terraform apply
