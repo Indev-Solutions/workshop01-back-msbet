@@ -18,5 +18,5 @@ jobs:
       - name: Update Kubernetes Configuration
         run: aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name my_eks
       - name: Debug
-#        working-directory: ./deploy
+        working-directory: ./deploy
         run: terraform version
