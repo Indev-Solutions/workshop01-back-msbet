@@ -77,7 +77,7 @@ resource "kubernetes_deployment" "deployment-msbet" {
 
           env {
             name  = "DATABASE_URL"
-            value = "jdbc:postgresql://${var.DATABASE_HOSTNAME}:5432/workshop"
+            value = "jdbc:postgresql://${var.database_hostname}:5432/workshop"
           }
 
           env {
@@ -87,7 +87,7 @@ resource "kubernetes_deployment" "deployment-msbet" {
 
           env {
             name  = "DATABASE_PASSWORD"
-            value = var.DATABASE_PASSWORD
+            value = var.database_password
           }
 
           port {
