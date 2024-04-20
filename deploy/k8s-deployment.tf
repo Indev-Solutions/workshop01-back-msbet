@@ -43,11 +43,6 @@ resource "kubernetes_deployment" "msbet-deployment" {
           image = "indevsolutions/workshop1:ms-bet_v5"
           name  = "customservicebet"
 
-          port = {
-            name = "tcp"
-            container_port = 8080
-          }
-
           env {
             name = "DATABASE_URL"
             value = "jdbc:postgresql://${var.DATABASE_HOSTNAME}:5432/workshop"
@@ -63,6 +58,11 @@ resource "kubernetes_deployment" "msbet-deployment" {
             value = var.DATABASE_PASSWORD
           }
 
+          port = {
+            container_port = 8080
+            name           = "tcp"
+          }
+          
           resources {
             limits = {
               cpu    = "0.5"
