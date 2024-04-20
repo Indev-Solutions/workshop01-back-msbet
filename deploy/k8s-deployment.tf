@@ -43,10 +43,10 @@ resource "kubernetes_deployment" "msbet-deployment" {
           image = "indevsolutions/workshop1:ms-bet_v5"
           name  = "customservicebet"
 
-          port = [{
+          port = {
             name = "tcp"
             container_port = 8080
-          }]
+          }
 
           env {
             name = "DATABASE_URL"
