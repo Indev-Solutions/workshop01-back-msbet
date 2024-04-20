@@ -1,5 +1,5 @@
-name: Java CI+CD
-run-name: ${{ github.actor }} is starting the execution of backend pipeline "Java CI+CD" with GitHub Actions
+name: Java CD
+run-name: ${{ github.actor }} is starting the execution of backend pipeline "Java CD" with GitHub Actions
 on: workflow_dispatch
 env:
   AWS_REGION: us-east-1
@@ -23,13 +23,9 @@ jobs:
           parse-json-secrets: true
       - name: Update Kubernetes Configuration
         run: aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name my_eks
-      - name: Set Terraform Variable
-        run: export TF_VAR_DATABASE_HOSTNAME=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_HOSTNAME }}
-      - name: Set Terraform Variable
-        run: export TF_VAR_DATABASE_PASSWORD=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_PASSWORD }}
       - name: Execute Terraform Init
         working-directory: ./deploy
         run: terraform init
       - name: Execute Terraform Apply
         working-directory: ./deploy
-        run: terraform apply -auto-approve
+        run: terraform apply -var="DATABASE_HOSTNAME=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_HOSTNAME }}" -var="DATABASE_PASSWORD=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_PASSWORD }}" -auto-approve
