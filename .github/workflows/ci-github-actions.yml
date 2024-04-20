@@ -51,4 +51,4 @@ jobs:
             "env_database_password=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_PASSWORD }}"
           context: .
           push: true
-          tags: ${{ vars.DOCKERHUB_REPOSITORY }}/workshop1:ms-bet_v4
+          tags: ${{ vars.DOCKERHUB_REPOSITORY }}/workshop1:ms-bet_v5

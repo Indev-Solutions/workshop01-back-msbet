@@ -15,8 +15,18 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
+      - name: Get AWS Secrets by Name
+        uses: aws-actions/aws-secretsmanager-get-secrets@v1
+        with:
+          secret-ids: |
+            pro/workshop1/secrets
+          parse-json-secrets: true
       - name: Update Kubernetes Configuration
         run: aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name my_eks
+      - name: Set Terraform Variable
+        run: export TF_VAR_DATABASE_HOSTNAME=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_HOSTNAME }}
+      - name: Set Terraform Variable
+        run: export TF_VAR_DATABASE_PASSWORD=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_PASSWORD }}
       - name: Execute Terraform Init
         working-directory: ./deploy
         run: terraform init
