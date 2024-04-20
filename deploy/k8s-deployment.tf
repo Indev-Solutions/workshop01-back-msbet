@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    kubernetes = {
+      source  = "hashicorp/kubernetes"
+      version = "2.29.0"
+    }
+  }
+}
+
 provider "kubernetes" {
   config_path = "~/.kube/config"
 }
@@ -44,25 +53,25 @@ resource "kubernetes_deployment" "msbet-deployment" {
           name  = "customservicebet"
 
           env {
-            name = "DATABASE_URL"
+            name  = "DATABASE_URL"
             value = "jdbc:postgresql://${var.DATABASE_HOSTNAME}:5432/workshop"
           }
 
           env {
-            name = "DATABASE_USER"
+            name  = "DATABASE_USER"
             value = "dbadmin"
           }
 
           env {
-            name = "DATABASE_PASSWORD"
+            name  = "DATABASE_PASSWORD"
             value = var.DATABASE_PASSWORD
           }
 
-          port = {
+          port {
             container_port = 8080
             name           = "tcp"
           }
-          
+
           resources {
             limits = {
               cpu    = "0.5"
