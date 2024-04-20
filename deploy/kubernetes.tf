@@ -1,31 +1,56 @@
 terraform {
+  backend "s3" {
+    bucket = "brstworkshop1"
+    key    = "rst/iac"
+    region = "us-east-1"
+  }
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "5.46.0"
+    }
+  }
+
   required_providers {
     kubernetes = {
       source  = "hashicorp/kubernetes"
       version = "2.29.0"
     }
   }
+
+  required_version = "~> 1.7"
+}
+
+provider "aws" {
+  region = var.region
 }
 
 provider "kubernetes" {
   config_path = "~/.kube/config"
 }
 
-variable "DATABASE_HOSTNAME" {
+variable "region" {
+  type        = string
+  description = "AWS region for all cloud resources"
+}
+
+variable "database_hostname" {
   type        = string
   description = "Hostname of database"
   sensitive   = true
 }
 
-variable "DATABASE_PASSWORD" {
+variable "database_password" {
   type        = string
   description = "Password of database"
   sensitive   = true
 }
 
-resource "kubernetes_deployment" "msbet-deployment" {
+resource "kubernetes_deployment" "deployment-msbet" {
   metadata {
     name = "workshop1-deployment-msbet"
+
     labels = {
       app = "workshop1-backend-msbet"
     }
@@ -77,6 +102,7 @@ resource "kubernetes_deployment" "msbet-deployment" {
               cpu    = "0.5"
               memory = "512Mi"
             }
+
             requests = {
               cpu    = "250m"
               memory = "50Mi"
@@ -85,5 +111,30 @@ resource "kubernetes_deployment" "msbet-deployment" {
         }
       }
     }
+  }
+}
+
+resource "kubernetes_service" "msbet-service" {
+  metadata {
+    name = "workshop1-service-msbet"
+
+    annotations = {
+      "service.beta.kubernetes.io/aws-load-balancer-internal" = "true"
+      "service.beta.kubernetes.io/aws-load-balancer-type"     = "nlb"
+    }
+  }
+
+  spec {
+    selector = {
+      app = kubernetes_deployment.deployment-msbet.metadata.0.labels.app
+    }
+
+    port {
+      port        = 80
+      target_port = 8080
+      protocol    = "TCP"
+    }
+
+    type = "LoadBalancer"
   }
 }

@@ -28,4 +28,4 @@ jobs:
         run: terraform init
       - name: Execute Terraform Apply
         working-directory: ./deploy
-        run: terraform apply -var="DATABASE_HOSTNAME=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_HOSTNAME }}" -var="DATABASE_PASSWORD=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_PASSWORD }}" -auto-approve
+        run: terraform apply -var="region=${{ env.AWS_REGION }}" -var="database_hostname=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_HOSTNAME }}" -var="database_password=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_PASSWORD }}" -auto-approve
