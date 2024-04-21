@@ -20,14 +20,6 @@ terraform {
   required_version = "~> 1.7"
 }
 
-provider "aws" {
-  region = var.region
-}
-
-provider "kubernetes" {
-  config_path = "~/.kube/config"
-}
-
 variable "region" {
   type        = string
   description = "AWS region for all cloud resources"
@@ -55,6 +47,20 @@ variable "apigateway_jwt_configuration_issuer" {
   type        = string
   description = "Issuer of JWT configuration for api gateway"
   sensitive   = true
+}
+
+variable "account_id" {
+  type        = string
+  description = "AWS account id"
+  sensitive   = true
+}
+
+provider "aws" {
+  region = var.region
+}
+
+provider "kubernetes" {
+  config_path = "~/.kube/config"
 }
 
 data "terraform_remote_state" "integration" {
@@ -186,11 +192,21 @@ resource "aws_apigatewayv2_authorizer" "my_apigateway_authorizer_msbet" {
     issuer   = var.apigateway_jwt_configuration_issuer
   }
 }
-/*
+
+locals {
+  load_balancer_ingress_hostname = kubernetes_service.msbet-service.status.0.load_balancer.0.ingress.0.hostname
+  load_balancer_ids              = split("-", split(".", local.load_balancer_ingress_hostname).0)
+}
+
+data "aws_lb_listener" "my_lb_listener_msbet" {
+  load_balancer_arn = "arn:aws:elasticloadbalancing:${var.region}:${var.account_id}:loadbalancer/net/${local.load_balancer_ids.0}/${local.load_balancer_ids.1}"
+  port              = 80
+}
+
 resource "aws_apigatewayv2_integration" "my_apigateway_integration_msbet" {
   api_id             = aws_apigatewayv2_api.my_apigateway_msbet.id
   integration_type   = "HTTP_PROXY"
-  integration_uri    = var.apigateway_integration_uri
+  integration_uri    = data.aws_lb_listener.my_lb_listener_msbet.arn
   integration_method = "ANY"
   connection_type    = "VPC_LINK"
   connection_id      = data.terraform_remote_state.integration.outputs.my_apigateway_vpc_link_id
@@ -202,8 +218,12 @@ resource "aws_apigatewayv2_route" "my_apigateway_route_msbet" {
   target             = "integrations/${aws_apigatewayv2_integration.my_apigateway_integration_msbet.id}"
   authorization_type = "JWT"
   authorizer_id      = aws_apigatewayv2_authorizer.my_apigateway_authorizer_msbet.id
-}*/
+}
 
-output "load_balancer_ingress" {
-  value = kubernetes_service.msbet-service.status.0.load_balancer.0.ingress.0.hostname
+output "load_balancer_ingress_hostname" {
+  value = local.load_balancer_ingress_hostname
+}
+
+output "apigateway_integration_uri" {
+  value = data.aws_lb_listener.my_lb_listener_msbet.arn
 }
