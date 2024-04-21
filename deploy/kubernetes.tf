@@ -45,6 +45,28 @@ variable "database_password" {
   sensitive   = true
 }
 
+variable "apigateway_jwt_configuration_audience" {
+  type        = string
+  description = "Audience of JWT configuration for api gateway"
+  sensitive   = true
+}
+
+variable "apigateway_jwt_configuration_issuer" {
+  type        = string
+  description = "Issuer of JWT configuration for api gateway"
+  sensitive   = true
+}
+
+data "terraform_remote_state" "integration" {
+  backend = "s3"
+
+  config = {
+    bucket = "brstworkshop1"
+    key    = "env:/workshop1-pro-integration/rst/iac"
+    region = var.region
+  }
+}
+
 resource "kubernetes_deployment" "deployment-msbet" {
   metadata {
     name = "workshop1-deployment-msbet"
@@ -135,4 +157,53 @@ resource "kubernetes_service" "msbet-service" {
 
     type = "LoadBalancer"
   }
+}
+
+resource "aws_apigatewayv2_api" "my_apigateway_msbet" {
+  name          = "my-http-api-msbet"
+  protocol_type = "HTTP"
+}
+
+resource "aws_apigatewayv2_stage" "my_apigateway_stage_msbet" {
+  api_id      = aws_apigatewayv2_api.my_apigateway_msbet.id
+  name        = "$default"
+  auto_deploy = true
+
+  default_route_settings {
+    throttling_burst_limit = 100
+    throttling_rate_limit  = 200
+  }
+}
+
+resource "aws_apigatewayv2_authorizer" "my_apigateway_authorizer_msbet" {
+  name             = "my-apigateway-authorizer-msbet"
+  api_id           = aws_apigatewayv2_api.my_apigateway_msbet.id
+  authorizer_type  = "JWT"
+  identity_sources = ["$request.header.Authorization"]
+
+  jwt_configuration {
+    audience = [var.apigateway_jwt_configuration_audience]
+    issuer   = var.apigateway_jwt_configuration_issuer
+  }
+}
+/*
+resource "aws_apigatewayv2_integration" "my_apigateway_integration_msbet" {
+  api_id             = aws_apigatewayv2_api.my_apigateway_msbet.id
+  integration_type   = "HTTP_PROXY"
+  integration_uri    = var.apigateway_integration_uri
+  integration_method = "ANY"
+  connection_type    = "VPC_LINK"
+  connection_id      = data.terraform_remote_state.integration.outputs.my_apigateway_vpc_link_id
+}
+
+resource "aws_apigatewayv2_route" "my_apigateway_route_msbet" {
+  api_id             = aws_apigatewayv2_api.my_apigateway_msbet.id
+  route_key          = "ANY /workshop/bets"
+  target             = "integrations/${aws_apigatewayv2_integration.my_apigateway_integration_msbet.id}"
+  authorization_type = "JWT"
+  authorizer_id      = aws_apigatewayv2_authorizer.my_apigateway_authorizer_msbet.id
+}*/
+
+output "load_balancer_ingress" {
+  value = kubernetes_service.msbet-service.status.0.load_balancer.0.ingress.0.hostname
 }
