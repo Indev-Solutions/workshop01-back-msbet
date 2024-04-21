@@ -46,9 +46,9 @@ jobs:
         with:
           target: production
           build-args: |
-            "env_database_url=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_HOSTNAME }}"
+            "env_database_url=jdbc:postgresql://${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_HOSTNAME }}:5432/workshop"
             "env_database_user=dbadmin"
             "env_database_password=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_PASSWORD }}"
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/workshop1:ms-bet_v1
+          tags: ${{ vars.DOCKERHUB_REPOSITORY }}/workshop1:ms-bet_v5
