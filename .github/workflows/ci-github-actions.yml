@@ -2,7 +2,7 @@ name: Java CI
 run-name: ${{ github.actor }} is starting the execution of backend pipeline "Java CI" with GitHub Actions
 on:
   push:
-    branches: [ "develop" ]
+    branches: [ "develop", "feature/**" ]
   workflow_dispatch:
 env:
   AWS_REGION: us-east-1
@@ -51,4 +51,4 @@ jobs:
             "env_database_password=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_PASSWORD }}"
           context: .
           push: true
-          tags: ${{ vars.DOCKERHUB_REPOSITORY }}/workshop1:ms-bet_v5
+          tags: ${{ vars.DOCKERHUB_REPOSITORY }}/workshop1:ms-bet_v6
