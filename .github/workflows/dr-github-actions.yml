@@ -1,0 +1,41 @@
+name: Java Deployment Removal
+run-name: ${{ github.actor }} is starting the execution of backend pipeline "Java Deployment Removal" with GitHub Actions
+on: workflow_dispatch
+env:
+  AWS_REGION: us-east-1
+  TF_VAR_apigateway_jwt_configuration_audience: ${{ secrets.TF_APIGATEWAY_JWT_CONFIGURATION_AUDIENCE }}
+  TF_VAR_apigateway_jwt_configuration_issuer: ${{ secrets.TF_APIGATEWAY_JWT_CONFIGURATION_ISSUER }}
+  TF_VAR_account_id: ${{ secrets.TF_ACCOUNT_ID }}
+jobs:
+  deploy:
+    name: 'Backend Deployment Removal'
+    runs-on: self-hosted
+    environment: PRO
+    steps:
+      - uses: actions/checkout@v4
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+      - name: Get AWS Secrets by Name
+        uses: aws-actions/aws-secretsmanager-get-secrets@v1
+        with:
+          secret-ids: |
+            pro/workshop1/secrets
+          parse-json-secrets: true
+      - name: Update Kubernetes Configuration
+        run: aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name my_eks
+      - name: Execute Terraform Init
+        working-directory: ./deploy
+        run: terraform init
+      - name: Select Terraform Workspace
+        working-directory: ./deploy
+        run: terraform workspace select -or-create=true workshop1-pro-msbet
+      - name: Extract Maven project version
+        run: |
+          echo "MAVEN_PROJECT_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> "$GITHUB_ENV"
+      - name: Execute Terraform Destroy
+        working-directory: ./deploy
+        run: terraform destroy -var="region=${{ env.AWS_REGION }}" -var="msbet_version=${{ env.MAVEN_PROJECT_VERSION }}" -var="database_hostname=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_HOSTNAME }}" -var="database_password=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_PASSWORD }}" -auto-approve
