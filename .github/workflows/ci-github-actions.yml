@@ -29,7 +29,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
       - name: Get AWS Secrets by Name
-        uses: aws-actions/aws-secretsmanager-get-secrets@v1
+        uses: aws-actions/aws-secretsmanager-get-secrets@v2
         with:
           secret-ids: |
             pro/workshop1/secrets
@@ -41,6 +41,9 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Extract Maven project version
+        run: |
+          echo "MAVEN_PROJECT_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)" >> "$GITHUB_ENV"
       - name: Build and push to Docker Hub
         uses: docker/build-push-action@v5
         with:
@@ -51,4 +54,4 @@ jobs:
             "env_database_password=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_PASSWORD }}"
           context: .
           push: true
-          tags: ${{ vars.DOCKERHUB_REPOSITORY }}/workshop1:ms-bet_v6
+          tags: ${{ vars.DOCKERHUB_REPOSITORY }}/workshop1:ms-bet_v${{ env.MAVEN_PROJECT_VERSION }}
