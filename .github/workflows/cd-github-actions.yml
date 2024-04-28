@@ -13,6 +13,7 @@ jobs:
   deploy:
     name: 'Backend CD'
     runs-on: self-hosted
+    environment: PRO
     steps:
       - uses: actions/checkout@v4
       - name: Configure AWS credentials
@@ -35,6 +36,11 @@ jobs:
       - name: Select Terraform Workspace
         working-directory: ./deploy
         run: terraform workspace select -or-create=true workshop1-pro-msbet
+      - name: Extract Maven project version
+        run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+        id: project
+      - name: Show extracted Maven project version
+        run: echo ${{ steps.project.outputs.version }}
       - name: Execute Terraform Apply
         working-directory: ./deploy
-        run: terraform apply -var="region=${{ env.AWS_REGION }}" -var="database_hostname=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_HOSTNAME }}" -var="database_password=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_PASSWORD }}" -auto-approve
+        run: terraform apply -var="region=${{ env.AWS_REGION }}" -var="msbet_version=${{ steps.project.outputs.version }}" -var="database_hostname=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_HOSTNAME }}" -var="database_password=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_PASSWORD }}" -auto-approve

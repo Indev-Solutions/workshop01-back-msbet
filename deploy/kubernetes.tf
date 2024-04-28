@@ -25,6 +25,11 @@ variable "region" {
   description = "AWS region for all cloud resources"
 }
 
+variable "msbet_version" {
+  type        = string
+  description = "Version of microservice bet to deploy"
+}
+
 variable "database_hostname" {
   type        = string
   description = "Hostname of database"
@@ -100,7 +105,7 @@ resource "kubernetes_deployment" "deployment-msbet" {
 
       spec {
         container {
-          image = "indevsolutions/workshop1:ms-bet_v5"
+          image = "indevsolutions/workshop1:ms-bet_${var.msbet_version}"
           name  = "customservicebet"
 
           env {

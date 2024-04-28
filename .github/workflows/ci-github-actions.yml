@@ -41,6 +41,11 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Extract Maven project version
+        run: echo ::set-output name=version::$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+        id: project
+      - name: Show extracted Maven project version
+        run: echo ${{ steps.project.outputs.version }}
       - name: Build and push to Docker Hub
         uses: docker/build-push-action@v5
         with:
@@ -51,4 +56,4 @@ jobs:
             "env_database_password=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_PASSWORD }}"
           context: .
           push: true
-          tags: ${{ vars.DOCKERHUB_REPOSITORY }}/workshop1:ms-bet_v6
+          tags: ${{ vars.DOCKERHUB_REPOSITORY }}/workshop1:ms-bet_${{ steps.project.outputs.version }}
