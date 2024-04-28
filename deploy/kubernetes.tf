@@ -105,7 +105,7 @@ resource "kubernetes_deployment" "deployment-msbet" {
 
       spec {
         container {
-          image = "indevsolutions/workshop1:ms-bet_${var.msbet_version}"
+          image = "indevsolutions/workshop1:ms-bet_v${var.msbet_version}"
           name  = "customservicebet"
 
           env {
