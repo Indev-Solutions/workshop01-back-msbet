@@ -232,3 +232,7 @@ output "load_balancer_ingress_hostname" {
 output "apigateway_integration_uri" {
   value = data.aws_lb_listener.my_lb_listener_msbet.arn
 }
+
+output "apigateway_endpoint" {
+  value = aws_apigatewayv2_api.my_apigateway_msbet.api_endpoint
+}
