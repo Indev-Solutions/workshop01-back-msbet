@@ -55,5 +55,9 @@ jobs:
           context: .
           push: true
           tags: ${{ vars.DOCKERHUB_REPOSITORY }}/workshop1:ms-bet_v${{ env.MAVEN_PROJECT_VERSION }}
-      - name: Deploy Maven package
-        run: mvn deploy
+      - name: Test 1
+        run: cat ~/.m2/settings.xml
+      - name: Test 2
+        run: echo '<settings xmlns="http://maven.apache.org/SETTINGS/1.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0 http://maven.apache.org/xsd/settings-1.0.0.xsd"><servers><server><id>github</id><username>cnunezdp-indevsolutions</username><password>${env.TOKEN}</password></server></servers></settings>' > .m2/settings.xml
+#      - name: Deploy Maven package
+#        run: mvn deploy
