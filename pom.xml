@@ -11,7 +11,7 @@
 	
 	<groupId>com.indevsolutions.workshop</groupId>
 	<artifactId>workshop-bet</artifactId>
-	<version>0.0.6</version>
+	<version>0.0.7</version>
 	<name>workshop-bet</name>
 	<description>Demo project for Spring Boot</description>
 	
@@ -143,4 +143,12 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub OWNER Apache Maven Packages</name>
+			<url>https://maven.pkg.github.com/Indev-Solutions/workshop01-back-msbet</url>
+		</repository>
+	</distributionManagement>
 </project>
