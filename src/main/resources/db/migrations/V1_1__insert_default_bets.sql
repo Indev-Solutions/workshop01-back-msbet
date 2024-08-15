@@ -1,4 +1,4 @@
-INSERT INTO bet_schema.bet (id, league_id, "match", match_date) VALUES(1, 1, 'Universitario vs Alianza', '2024-08-30 18:32:33.034');
+INSERT INTO bet_schema.bet (id, league_id, "match", match_date) VALUES(1, 1, 'Universitario vs Alianza', '2024-11-10 16:00:00.000');
 INSERT INTO bet_schema.bet (id, league_id, "match", match_date) VALUES(2, 2, 'Barcelona vs Real Madrid', '2024-08-10 18:32:33.034');
 
 INSERT INTO bet_schema.bet_option (id, rate, bet_id, description) VALUES(1, 0.30, 1, 'Universitario');
