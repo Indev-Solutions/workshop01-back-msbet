@@ -42,6 +42,11 @@ jobs:
       - name: Execute Terraform Apply
         working-directory: ./deploy
         run: terraform apply -var="region=${{ env.AWS_REGION }}" -var="msbet_version=${{ env.MAVEN_PROJECT_VERSION }}" -var="database_hostname=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_HOSTNAME }}" -var="database_password=${{ env.PRO_WORKSHOP1_SECRETS_DATABASE_PASSWORD }}" -auto-approve
+      - name: Deploy Maven package
+        run: mvn deploy
+        env:
+          GITHUB_ACTOR: cnunezdp-indevsolutions
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Send Message to Slack
         id: slack
         uses: slackapi/slack-github-action@v1.26.0
