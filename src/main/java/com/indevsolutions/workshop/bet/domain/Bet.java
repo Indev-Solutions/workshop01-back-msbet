@@ -1,5 +1,6 @@
 package com.indevsolutions.workshop.bet.domain;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -28,6 +29,9 @@ public class Bet {
 
 	@Column(name = "result_id")
 	private Long resultId;
+
+	@Column(name = "min_amount")
+	private BigDecimal minAmount;
 
 	@OneToMany(mappedBy = "bet")
 	@OrderBy("id")
@@ -80,5 +84,14 @@ public class Bet {
 	public void setResultId(Long resultId) {
 		this.resultId = resultId;
 	}
+
+	public BigDecimal getMinAmount() {
+		return minAmount;
+	}
+
+	public void setMinAmount(BigDecimal minAmount) {
+		this.minAmount = minAmount;
+	}
+	
 
 }
