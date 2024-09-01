@@ -33,6 +33,9 @@ public class Bet {
 	@Column(name = "min_amount")
 	private BigDecimal minAmount;
 
+	@Column(name = "max_amount")
+	private BigDecimal maxAmount;
+
 	@OneToMany(mappedBy = "bet")
 	@OrderBy("id")
 	private Set<BetOption> options;
@@ -92,6 +95,13 @@ public class Bet {
 	public void setMinAmount(BigDecimal minAmount) {
 		this.minAmount = minAmount;
 	}
-	
+
+	public BigDecimal getMaxAmount() {
+		return maxAmount;
+	}
+
+	public void setMaxAmount(BigDecimal maxAmount) {
+		this.maxAmount = maxAmount;
+	}
 
 }

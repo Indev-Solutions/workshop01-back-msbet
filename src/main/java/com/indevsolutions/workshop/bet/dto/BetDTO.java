@@ -13,6 +13,7 @@ public class BetDTO {
 	private LocalDateTime matchDate;
 	private Integer status;
 	private BigDecimal minAmount;
+	private BigDecimal maxAmount;
 	private Long resultId;
 	private Set<BetOptionDTO> options;
 	
@@ -54,7 +55,7 @@ public class BetDTO {
 		this.matchDate = matchDate;
 	}
 	public Long getResultId() {
-		return resultId;
+		return resultId;	
 	}
 	public void setResultId(Long resultId) {
 		this.resultId = resultId;
@@ -64,6 +65,12 @@ public class BetDTO {
 	}
 	public void setMinAmount(BigDecimal minAmount) {
 		this.minAmount = minAmount;
+	}
+	public BigDecimal getMaxAmount() {
+		return maxAmount;
+	}
+	public void setMaxAmount(BigDecimal maxAmount) {
+		this.maxAmount = maxAmount;
 	}
 	
 	
