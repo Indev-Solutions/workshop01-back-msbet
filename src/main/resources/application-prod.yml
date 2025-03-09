@@ -20,5 +20,5 @@ spring:
       properties:
          hibernate:
             dialect: org.hibernate.dialect.PostgreSQLDialect
-            format_sql: true
-            default_schema: bet_schema
+            '[format_sql]': true
+            '[default_schema]': bet_schema
