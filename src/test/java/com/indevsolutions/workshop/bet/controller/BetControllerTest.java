@@ -80,7 +80,7 @@ class BetControllerTest {
 
 		var bets = betResponse.getBody();
 		assertNotNull(bets);
-		assertEquals(1, bets.size());
+		assertEquals(2, bets.size());
 		assertEquals(2, bets.get(0).getStatus());
 	}
 	
