@@ -30,7 +30,7 @@ class BetServiceTest {
 	public BetService betService;
 
 	@BeforeEach
-	public void setUp() {
+	void setUp() {
 		when(betRepository.findByLeagueId(anyLong())).thenReturn(bets());
 		ReflectionTestUtils.setField(betService, "modelMapper", new ModelMapper());
 	}
